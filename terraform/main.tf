@@ -1,6 +1,3 @@
-##############################
-# 1. VPC + Subnets
-##############################
 resource "aws_vpc" "main" {
   cidr_block           = "10.0.0.0/16"
   enable_dns_support   = true
@@ -52,9 +49,6 @@ resource "aws_route_table_association" "b" {
   route_table_id = aws_route_table.public.id
 }
 
-##############################
-# 2. IAM Roles for EKS
-##############################
 
 # EKS Cluster Role
 resource "aws_iam_role" "eks_cluster_role" {
@@ -112,9 +106,7 @@ resource "aws_iam_role_policy_attachment" "node_AmazonEKS_CNI_Policy" {
   role       = aws_iam_role.eks_node_role.name
 }
 
-##############################
-# 3. EKS Cluster
-##############################
+
 resource "aws_eks_cluster" "main" {
   name     = var.cluster_name
   role_arn = aws_iam_role.eks_cluster_role.arn
@@ -126,9 +118,7 @@ resource "aws_eks_cluster" "main" {
   depends_on = [aws_iam_role_policy_attachment.eks_cluster_AmazonEKSClusterPolicy]
 }
 
-##############################
-# 4. Node Group
-##############################
+
 resource "aws_eks_node_group" "nodes" {
   cluster_name    = aws_eks_cluster.main.name
   node_group_name = "${var.cluster_name}-nodegroup"
@@ -137,7 +127,7 @@ resource "aws_eks_node_group" "nodes" {
   instance_types  = [var.node_instance_type]
   scaling_config {
     desired_size = var.desired_size
-    max_size     = 3
+    max_size     = 2
     min_size     = 1
   }
 
