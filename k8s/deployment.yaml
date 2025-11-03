@@ -17,7 +17,7 @@ spec:
       containers:
       - name: insurance-app
         # CI will replace IMAGE_HERE with dockerhub_user/insurance-predictor:<sha>
-        image: techikrish/insurance-predictor:8
+        image: techikrish/insurance-predictor:9
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
