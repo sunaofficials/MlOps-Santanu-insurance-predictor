@@ -19,10 +19,12 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
+        working-directory: app
         run: |
           pip install -r requirements.txt
 
       - name: Train model
+        working-directory: app
         run: |
           python model_train.py
 
@@ -36,7 +38,7 @@ jobs:
         run: |
           IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/insurance-predictor
           IMAGE_TAG=${{ github.run_number }}
-          docker build -t $IMAGE_NAME:$IMAGE_TAG .
+          docker build -t $IMAGE_NAME:$IMAGE_TAG ./app
           echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
           echo "IMAGE_TAG=$IMAGE_TAG" >> $GITHUB_ENV
 
@@ -53,5 +55,5 @@ jobs:
           git config --global user.email "actions@github.com"
           git config --global user.name "github-actions"
           git add k8s/deployment.yaml
-          git commit -m "Update image to $IMAGE_NAME:$IMAGE_TAG"
+          git commit -m "Update image to $IMAGE_NAME:$IMAGE_TAG" || echo "No changes to commit"
           git push
