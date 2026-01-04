@@ -52,7 +52,7 @@ pipeline {
 
         stage('Update GitOps Manifest') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'github-creds', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                withCredentials([usernamePassword(credentialsId: 'git-sant', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                     script {
                         sh """
                             git config user.email "sss@ss.com"
