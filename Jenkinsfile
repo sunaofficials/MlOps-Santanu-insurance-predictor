@@ -30,7 +30,7 @@ pipeline {
         stage('Push to ECR') {
             steps {
                 // Authenticate and push to AWS ECR
-                withAWS(credentials: 'aws-creds', region: "${AWS_DEFAULT_REGION}") {
+                withAWS(credentials: 'aws-sant', region: "${AWS_DEFAULT_REGION}") {
                     sh "aws ecr get-login-password --region ${AWS_DEFAULT_REGION} | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_DEFAULT_REGION}.amazonaws.com"
                     sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:${IMAGE_TAG}"
                     sh "docker tag ${IMAGE_REPO_NAME}:${IMAGE_TAG} ${REPOSITORY_URI}:latest"
@@ -43,11 +43,11 @@ pipeline {
         stage('Update GitOps Manifest') {
             steps {
                 // This stage updates the deployment.yaml with the new image tag
-                withCredentials([usernamePassword(credentialsId: 'github-creds', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                withCredentials([usernamePassword(credentialsId: 'git-sant', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
                     script {
                         sh """
-                            git config user.email "jenkins@yourdomain.com"
-                            git config user.name "Jenkins CI"
+                            git config user.email "suna@rrr.com"
+                            git config user.name "santanu"
                             
                             # Use 'sed' to update the image tag in deployment.yaml
                             sed -i 's|image: .*|image: ${REPOSITORY_URI}:${IMAGE_TAG}|g' k8s/deployment.yaml
