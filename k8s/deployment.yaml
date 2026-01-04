@@ -17,7 +17,7 @@ spec:
       containers:
       - name: insurance-app
         # CI will replace IMAGE_HERE with dockerhub_user/insurance-predictor:<sha>
-        image: 814820107207.dkr.ecr.ap-south-2.amazonaws.com/insurance-app:v4
+        image: 814820107207.dkr.ecr.ap-south-2.amazonaws.com/insurance-app:v7
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5000
